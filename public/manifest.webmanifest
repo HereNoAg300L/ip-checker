@@ -1,0 +1,17 @@
+{
+  "name": "IP Lens",
+  "short_name": "IP Lens",
+  "description": "自托管的 IP 地址与网络信息检测工具",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3f5f1",
+  "theme_color": "#101713",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

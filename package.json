@@ -1,0 +1,22 @@
+{
+  "name": "ip-lens",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A privacy-first IP information dashboard and API for Cloudflare Workers.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "check": "node --check src/index.js && node --check public/app.js",
+    "test": "node --test test/worker.test.mjs",
+    "preview:mock": "node test/preview-server.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.68.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@11.9.0",
+  "license": "MIT"
+}

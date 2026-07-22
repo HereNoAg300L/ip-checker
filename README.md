@@ -1,0 +1,202 @@
+# IP Lens
+
+一个面向个人自托管的 IP 检测网站：运行在 Cloudflare Workers，无数据库、无第三方 IP 查询服务、无需 API Key。网页、详细 JSON API 和苹果快捷指令接口一次部署全部可用。
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/HereNoAg300L/ip-checker)
+
+> Deploy 按钮指向 `HereNoAg300L/ip-checker`。首次使用前，请先将本目录发布到这个公开 GitHub 仓库；如果使用其他仓库名，请替换上方链接中的仓库 URL。
+
+![IP Lens 桌面端预览](docs/preview.png)
+
+<details>
+<summary>查看移动端长页面预览</summary>
+
+<img src="docs/preview-mobile.png" width="390" alt="IP Lens 移动端预览">
+</details>
+
+## 功能
+
+- 自动识别公网 IPv4 / IPv6，并规范化 IPv4-mapped IPv6。
+- 显示国家、地区、城市、邮编、时区、经纬度和当地时间。
+- 显示 ASN、网络组织、HTTP / TLS 协议、边缘延迟、Cloudflare 节点和 Ray ID。
+- 浏览器本地显示设备、系统、屏幕、语言和网络类型；这些数据不会上传。
+- 提供详细 JSON、中文纯文本和仅 IP 三类稳定接口。
+- 适配 iPhone、iPad 和 Mac 的“快捷指令”。
+- 响应禁止共享缓存，不回显 Cookie、Authorization 或任意转发头。
+- 自动深浅色、键盘焦点、加载状态、移动端单列和减少动态效果。
+
+所有 IP 地理信息都来自当前请求的 Cloudflare `request.cf` 元数据。位置是网络数据库的近似结果，不代表精确住址；ASN 组织名也不一定等同于运营商品牌。
+
+## 一键部署
+
+### Cloudflare Deploy 按钮
+
+1. 将 `ip-checker` 目录作为公开仓库推送到 GitHub。
+2. 修改 README 顶部 Deploy 按钮的仓库 URL（如果仓库不是 `HereNoAg300L/ip-checker`）。
+3. 点击 **Deploy to Cloudflare**。
+4. 登录 Cloudflare，确认仓库名和 Worker 名，随后部署。
+
+Cloudflare 会克隆仓库、配置 Workers Builds 并执行 `npx wrangler deploy`。本项目不依赖 KV、D1、R2 或 Secret，首次部署无需填写额外配置。
+
+### 命令行部署
+
+需要 Node.js 20 或更高版本：
+
+```bash
+corepack enable
+pnpm install
+pnpm deploy
+```
+
+首次执行时 Wrangler 会引导登录 Cloudflare。部署完成后会得到一个 `*.workers.dev` 地址，也可在 Cloudflare 控制台绑定自己的域名。
+
+### 本地开发
+
+```bash
+corepack enable
+pnpm install
+pnpm dev
+```
+
+Cloudflare 的 `request.cf` 在 Dashboard / Playground 预览中可能不可用。若只想查看带模拟数据的完整界面：
+
+```bash
+pnpm preview:mock
+```
+
+然后访问 `http://127.0.0.1:8787`。
+
+## API
+
+所有访客信息响应都带有 `Cache-Control: private, no-store`。字段缺失时返回 `null`，不会省略字段或猜测结果。
+
+| 接口 | 返回 | 用途 |
+| --- | --- | --- |
+| `GET /api/v1/ip` | JSON | 完整 IP、位置、网络与连接信息 |
+| `GET /api/v1/ip?format=text` | `text/plain` | 排版好的中文摘要，适合快捷指令直接显示 |
+| `GET /api/v1/ip?format=plain` | `text/plain` | 仅当前 IP |
+| `GET /ip` | `text/plain` | 仅当前 IP 的短路径 |
+| `GET /api/v1/ip.txt` | `text/plain` | 仅当前 IP，兼容 `.txt` 调用习惯 |
+| `GET /healthz` | JSON | 最小健康检查，不返回访客信息 |
+
+### JSON 示例
+
+```json
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "available": true,
+  "ip": "203.0.113.42",
+  "version": 4,
+  "network": {
+    "asn": 4134,
+    "asnLabel": "AS4134",
+    "organization": "CHINANET-BACKBONE"
+  },
+  "location": {
+    "country": "CN",
+    "countryName": "中国",
+    "region": "Shanghai",
+    "regionCode": "SH",
+    "city": "Shanghai",
+    "postalCode": "200000",
+    "continent": "AS",
+    "continentName": "亚洲",
+    "timezone": "Asia/Shanghai",
+    "latitude": 31.22222,
+    "longitude": 121.45806,
+    "isEU": false
+  },
+  "connection": {
+    "httpProtocol": "HTTP/3",
+    "tlsVersion": "TLSv1.3",
+    "tlsCipher": "AEAD-AES128-GCM-SHA256",
+    "tcpRttMs": null,
+    "quicRttMs": 22,
+    "deliveryRateBps": 3280000
+  },
+  "edge": {
+    "colo": "PVG",
+    "rayId": "example-PVG"
+  },
+  "request": {
+    "method": "GET",
+    "scheme": "https"
+  },
+  "privacy": {
+    "stored": false,
+    "preciseLocation": false,
+    "note": "IP 地理位置为网络数据库的近似结果，不代表精确住址。"
+  },
+  "source": ["cloudflare-edge"],
+  "timestamp": "2026-07-22T12:00:00.000Z"
+}
+```
+
+## 苹果快捷指令
+
+最简单的中文摘要快捷指令只需要三步：
+
+1. 添加“URL”，填写 `https://你的域名/api/v1/ip?format=text`。
+2. 添加“获取 URL 内容”，方法保持 `GET`。
+3. 添加“显示结果”。
+
+如果需要按字段自动化，请改用 `https://你的域名/api/v1/ip`，然后添加“获取词典值”：
+
+- `ip`：公网 IP
+- `version`：`4` 或 `6`
+- `network.organization`：网络组织
+- `location.countryName`：国家 / 地区
+- `location.city`：城市
+- `location.timezone`：时区
+- `edge.colo`：Cloudflare 节点
+
+更完整的图文式步骤见 [快捷指令说明](docs/apple-shortcuts.md)。
+
+## 隐私与安全边界
+
+- 只读取 Cloudflare 提供的 `CF-Connecting-IP`，不会信任 `X-Forwarded-For`、`Forwarded` 或 `X-Real-IP`。
+- 不返回 Cookie、Authorization、Referer、完整 User-Agent 或其他任意请求头。
+- 不使用第三方 Geo API，因此不会把访客 IP 再发送给其他服务。
+- API 默认不允许浏览器跨域读取；苹果快捷指令和命令行请求不受浏览器 CORS 限制。
+- 所有访客响应禁止缓存，避免不同访客之间串号。
+- 该 IP 结果仅用于展示，不能作为登录、授权、风控或计费依据。
+- 项目代码不主动记录访问日志；Cloudflare 账户级别的标准分析和日志策略由部署者自行管理。
+
+如果 Cloudflare Zone 开启了 **Pseudo IPv4**，建议选择 `Off` 或 `Add Header`，避免用伪 IPv4 覆盖真实 IPv6。
+
+## 为什么没有“VPN / 代理 / Tor 风险分数”？
+
+Cloudflare 基础请求元数据不能可靠给出这些结论。为了避免误导和避免把访客 IP 发送给第三方，本项目不会用启发式规则伪造风险判断。需要此类能力时，应由部署者明确接入可信数据源、配置 Worker Secret，并向访客说明数据会发送给谁。
+
+## 项目结构
+
+```text
+ip-checker/
+├─ public/                 # 静态网页与 PWA 资源
+├─ src/index.js            # Worker 路由、API 与安全响应头
+├─ test/                   # Node 单元测试与模拟预览服务
+├─ docs/apple-shortcuts.md # 快捷指令说明
+├─ wrangler.jsonc          # Cloudflare Workers 配置
+└─ package.json
+```
+
+## 测试
+
+```bash
+pnpm check
+pnpm test
+```
+
+测试覆盖 IPv4 / IPv6 规范化、伪造转发头、敏感头泄漏、输出格式、HEAD / OPTIONS / 405、无共享缓存和快捷指令文本返回。
+
+## 参考
+
+- [Cloudflare Deploy to Cloudflare buttons](https://developers.cloudflare.com/workers/platform/deploy-buttons/)
+- [Cloudflare Request / `request.cf`](https://developers.cloudflare.com/workers/runtime-apis/request/#incomingrequestcfproperties)
+- [Cloudflare Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/)
+- [Apple：在“快捷指令”中提出第一个 API 请求](https://support.apple.com/zh-cn/guide/shortcuts/apd58d46713f/ios)
+
+## License
+
+[MIT](LICENSE)
