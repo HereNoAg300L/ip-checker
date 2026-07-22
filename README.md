@@ -4,7 +4,7 @@
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/HereNoAg300L/ip-checker)
 
-> Deploy 按钮指向 `HereNoAg300L/ip-checker`。首次使用前，请先将本目录发布到这个公开 GitHub 仓库；如果使用其他仓库名，请替换上方链接中的仓库 URL。
+> 点击上方按钮即可从 `HereNoAg300L/ip-checker` 部署。如果你将项目复制到自己的仓库，请把按钮链接替换为新的公开仓库 URL。
 
 ![IP Lens 桌面端预览](docs/preview.png)
 
