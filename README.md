@@ -40,7 +40,7 @@ Cloudflare 会克隆仓库、配置 Workers Builds 并执行 `npx wrangler deplo
 
 ### 命令行部署
 
-需要 Node.js 20 或更高版本：
+需要 Node.js 22 或更高版本：
 
 ```bash
 corepack enable
