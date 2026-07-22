@@ -135,23 +135,18 @@ pnpm preview:mock
 
 ## 苹果快捷指令
 
-最简单的中文摘要快捷指令只需要三步：
+[下载并安装「查我的 IP」快捷指令](shortcuts/IP-Lens.shortcut?raw=1)
 
-1. 添加“URL”，填写 `https://你的域名/api/v1/ip?format=text`。
-2. 添加“获取 URL 内容”，方法保持 `GET`。
-3. 添加“显示结果”。
+1. 先完成 Cloudflare 部署，并复制部署结果中以 `workers.dev` 结尾的网站首页地址。
+2. 在 iPhone、iPad 或 Mac 上点击上方链接，下载后用“快捷指令”打开。
+3. 添加快捷指令时，粘贴网站首页地址；不要填写 `/api` 路径。
+4. 首次运行时允许它访问该网站。
 
-如果需要按字段自动化，请改用 `https://你的域名/api/v1/ip`，然后添加“获取词典值”：
+快捷指令会自动清理地址、请求 `/api/v1/ip?format=text`，并显示完整中文 IP 信息。它不需要 API Key，不读取通讯录、照片、定位或剪贴板；开启 VPN、iCloud 专用代理或切换蜂窝网络后，结果可能变化。
 
-- `ip`：公网 IP
-- `version`：`4` 或 `6`
-- `network.organization`：网络组织
-- `location.countryName`：国家 / 地区
-- `location.city`：城市
-- `location.timezone`：时区
-- `edge.colo`：Cloudflare 节点
+可安装文件由开源 [Cherri](https://github.com/electrikmilk/cherri) 生成，并在制作阶段通过 RoutineHub HubSign 签名；日常查询只连接你自己的 Worker，不经过签名服务。[查看可审计源码](shortcuts/IP-Lens.cherri)或[手动创建与高级用法](docs/apple-shortcuts.md)。
 
-更完整的图文式步骤见 [快捷指令说明](docs/apple-shortcuts.md)。
+如果下载文件无法打开，可按照说明中的三步手动创建，功能完全相同。
 
 ## 隐私与安全边界
 
@@ -177,6 +172,7 @@ ip-checker/
 ├─ src/index.js            # Worker 路由、API 与安全响应头
 ├─ test/                   # Node 单元测试与模拟预览服务
 ├─ docs/apple-shortcuts.md # 快捷指令说明
+├─ shortcuts/              # 已签名快捷指令与可审计源码
 ├─ wrangler.jsonc          # Cloudflare Workers 配置
 └─ package.json
 ```
@@ -196,6 +192,7 @@ pnpm test
 - [Cloudflare Request / `request.cf`](https://developers.cloudflare.com/workers/runtime-apis/request/#incomingrequestcfproperties)
 - [Cloudflare Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/)
 - [Apple：在“快捷指令”中提出第一个 API 请求](https://support.apple.com/zh-cn/guide/shortcuts/apd58d46713f/ios)
+- [Apple：在 iPhone 或 iPad 上共享快捷指令](https://support.apple.com/zh-cn/guide/shortcuts/apdf01f8c054/ios)
 
 ## License
 

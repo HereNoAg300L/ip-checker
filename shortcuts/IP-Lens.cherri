@@ -1,0 +1,14 @@
+#define name 查我的 IP
+#define color blue
+#define glyph globe
+
+#include 'actions/text'
+#include 'actions/web'
+
+#question website "请粘贴 Cloudflare 部署完成后显示的 IP Lens 网站首页地址。不要填写 /api 路径。" "https://example.invalid"
+
+const trimmedWebsite = trimWhitespace(website)
+const baseURL = replaceText('/+$', '', trimmedWebsite, true, true)
+const response = downloadURL("{baseURL}/api/v1/ip?format=text")
+
+show("{response}")

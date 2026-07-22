@@ -8,7 +8,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "check": "node --check src/index.js && node --check public/app.js",
-    "test": "node --test test/worker.test.mjs test/frontend.test.mjs",
+    "test": "node --test test/worker.test.mjs test/frontend.test.mjs test/shortcut-artifact.test.mjs",
     "preview:mock": "node test/preview-server.mjs"
   },
   "devDependencies": {
