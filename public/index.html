@@ -69,7 +69,7 @@
       <section class="details-section shell" id="details" aria-labelledby="details-title">
         <div class="section-heading">
           <h2 id="details-title">IP 详细信息</h2>
-          <p>缺失字段会明确显示“暂无数据”，不会用猜测补全。</p>
+          <p>Cloudflare 基础检测，可选 IPinfo 网络情报增强。</p>
         </div>
 
         <div class="bento-grid">
@@ -104,6 +104,7 @@
           <article class="info-card network-card">
             <div class="card-heading">
               <h3>网络信息</h3>
+              <span class="source-badge" id="networkSource">Cloudflare</span>
             </div>
 
             <div class="metric-block">
@@ -112,10 +113,12 @@
               <p id="organization">正在识别运营网络…</p>
             </div>
 
-            <dl class="data-list">
-              <div><dt>公网地址</dt><dd id="networkIp">—</dd></div>
+            <dl class="data-list two-columns">
+              <div><dt>公网地址</dt><dd class="is-code" id="networkIp">—</dd></div>
               <div><dt>地址协议</dt><dd id="networkVersion">—</dd></div>
-              <div><dt>数据来源</dt><dd>Cloudflare Edge</dd></div>
+              <div><dt>网络域名</dt><dd id="networkDomain">—</dd></div>
+              <div><dt>网络类型</dt><dd id="networkType">—</dd></div>
+              <div><dt>数据来源</dt><dd id="dataSource">Cloudflare Edge</dd></div>
               <div><dt>精确住址</dt><dd>不可识别</dd></div>
             </dl>
 
@@ -125,10 +128,56 @@
             </div>
           </article>
 
+          <article class="info-card intelligence-card">
+            <div class="card-heading">
+              <h3>网络情报</h3>
+              <span class="source-badge" id="intelligenceSource">可选增强</span>
+            </div>
+
+            <div class="intelligence-state" id="intelligenceState">
+              <span class="state-symbol" aria-hidden="true">i</span>
+              <div>
+                <strong id="intelligenceTitle">仅显示基础信息</strong>
+                <p id="intelligenceDescription">部署者配置 IPinfo 后，可补充网络类型与隐私特征。</p>
+              </div>
+            </div>
+
+            <div class="trait-grid" aria-label="网络特征检测结果">
+              <span class="trait-pill is-unknown" id="traitAnonymous"><b>匿名网络</b><em>未提供</em></span>
+              <span class="trait-pill is-unknown" id="traitVpn"><b>VPN</b><em>未提供</em></span>
+              <span class="trait-pill is-unknown" id="traitProxy"><b>代理</b><em>未提供</em></span>
+              <span class="trait-pill is-unknown" id="traitTor"><b>Tor</b><em>未提供</em></span>
+              <span class="trait-pill is-unknown" id="traitRelay"><b>Relay</b><em>未提供</em></span>
+              <span class="trait-pill is-unknown" id="traitHosting"><b>托管机房</b><em>未提供</em></span>
+              <span class="trait-pill is-unknown" id="traitAnycast"><b>Anycast</b><em>未提供</em></span>
+              <span class="trait-pill is-unknown" id="traitMobile"><b>移动网络</b><em>未提供</em></span>
+              <span class="trait-pill is-unknown" id="traitSatellite"><b>卫星网络</b><em>未提供</em></span>
+            </div>
+
+            <details class="more-details" id="moreDetails" open>
+              <summary>更多检测信息</summary>
+              <dl class="data-list two-columns">
+                <div><dt>主机名</dt><dd class="is-code" id="hostname">—</dd></div>
+                <div><dt>隐私服务</dt><dd id="privacyService">—</dd></div>
+                <div><dt>移动运营商</dt><dd id="mobileCarrier">—</dd></div>
+                <div><dt>定位精度半径</dt><dd id="accuracyRadius">—</dd></div>
+                <div><dt>GeoName ID</dt><dd class="is-code" id="geonameId">—</dd></div>
+                <div><dt>住宅代理</dt><dd id="residentialProxy">—</dd></div>
+                <div><dt>最近发现</dt><dd id="privacyLastSeen">—</dd></div>
+                <div><dt>近 7 天活跃</dt><dd id="privacyFrequency">—</dd></div>
+              </dl>
+            </details>
+
+            <p class="provider-note" id="providerNote">未启用 IPinfo 时，不会向第三方发送当前 IP。</p>
+          </article>
+
           <article class="info-card connection-card">
             <div class="card-heading">
               <h3>连接信息</h3>
-              <span class="connection-pill" id="protocolBadge">—</span>
+              <div class="heading-badges">
+                <span class="source-badge">Cloudflare</span>
+                <span class="connection-pill" id="protocolBadge">—</span>
+              </div>
             </div>
 
             <div class="latency-panel">
@@ -157,6 +206,7 @@
         <div class="footer-meta">
           <span id="footerStatus"><i></i><span id="footerStatusText">服务正常</span></span>
           <span>IP 位置是近似结果，不代表精确住址</span>
+          <span><a href="https://ipinfo.io" target="_blank" rel="noopener noreferrer">IP 数据由 IPinfo 提供</a>（启用增强时）</span>
         </div>
       </div>
     </footer>

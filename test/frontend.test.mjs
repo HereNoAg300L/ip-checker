@@ -27,7 +27,20 @@ test("anchors and accessible labels point to existing elements", () => {
 });
 
 test("home page contains only IP-focused information", () => {
-  for (const required of ["ipAddress", "copyIp", "refreshData", "details", "locationPrimary", "asnLabel", "rttValue"]) {
+  for (const required of [
+    "ipAddress",
+    "copyIp",
+    "refreshData",
+    "details",
+    "locationPrimary",
+    "asnLabel",
+    "networkDomain",
+    "networkType",
+    "intelligenceState",
+    "traitVpn",
+    "hostname",
+    "rttValue",
+  ]) {
     assert.match(html, new RegExp(`id="${required}"`));
   }
 
@@ -49,4 +62,7 @@ test("home page contains only IP-focused information", () => {
   }
 
   assert.match(script, /const API_PATH = "\/api\/v1\/ip"/);
+  assert.match(html, /IP 数据由 IPinfo 提供/);
+  assert.doesNotMatch(html, /fonts\.(googleapis|gstatic)\.com/);
+  assert.doesNotMatch(script, /value\s*\*\s*100/);
 });

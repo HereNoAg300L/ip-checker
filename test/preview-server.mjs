@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
-import worker from "../src/index.js";
+import { routeRequest } from "../src/index.js";
 
 const root = fileURLToPath(new URL("../public/", import.meta.url));
 const port = Number(process.env.PORT ?? 8787);
@@ -62,6 +62,47 @@ const assets = {
   },
 };
 
+const mockIpinfoFetch = async (requestUrl) => Response.json({
+  ip: decodeURIComponent(new URL(requestUrl).pathname.split("/").at(-1)),
+  hostname: "dynamic-ip.example.net",
+  geo: {
+    city: "Shanghai",
+    region: "Shanghai",
+    region_code: "SH",
+    country: "China",
+    country_code: "CN",
+    continent: "Asia",
+    continent_code: "AS",
+    latitude: 31.22222,
+    longitude: 121.45806,
+    timezone: "Asia/Shanghai",
+    postal_code: "200000",
+    radius: 20,
+    geoname_id: 1796236,
+    last_changed: "2026-07-01",
+  },
+  as: {
+    asn: "AS4134",
+    name: "CHINANET-BACKBONE",
+    domain: "chinatelecom.com.cn",
+    type: "isp",
+    last_changed: "2026-06-15",
+  },
+  anonymous: {
+    name: null,
+    is_proxy: false,
+    is_relay: false,
+    is_tor: false,
+    is_vpn: false,
+    is_res_proxy: false,
+  },
+  is_anonymous: false,
+  is_anycast: false,
+  is_hosting: false,
+  is_mobile: false,
+  is_satellite: false,
+});
+
 const server = createServer(async (incoming, outgoing) => {
   const request = new Request(`http://127.0.0.1:${port}${incoming.url}`, {
     method: incoming.method,
@@ -73,7 +114,11 @@ const server = createServer(async (incoming, outgoing) => {
   });
   Object.defineProperty(request, "cf", { value: mockCf });
 
-  const response = await worker.fetch(request, { ASSETS: assets });
+  const response = await routeRequest(
+    request,
+    { ASSETS: assets, IPINFO_TOKEN: "preview-token", IPINFO_MODE: "lookup" },
+    mockIpinfoFetch,
+  );
   outgoing.writeHead(response.status, Object.fromEntries(response.headers));
   if (response.body) outgoing.end(Buffer.from(await response.arrayBuffer()));
   else outgoing.end();
