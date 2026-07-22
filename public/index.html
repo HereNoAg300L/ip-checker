@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="theme-color" content="#101713">
-    <meta name="description" content="零追踪、自托管的 IP 地址与网络信息检测工具，运行在 Cloudflare Workers。">
-    <title>IP Lens · 看清你的网络连接</title>
+    <meta name="theme-color" content="#f7f7f5">
+    <meta name="description" content="简洁、详细的公网 IP 地址与网络信息检测工具。">
+    <title>IP Lens · IP 详细信息</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="stylesheet" href="/styles.css">
@@ -24,12 +24,6 @@
           <span>IP Lens</span>
         </a>
 
-        <nav class="nav-links" aria-label="主导航">
-          <a href="#details">详细信息</a>
-          <a href="#shortcuts">快捷指令</a>
-          <a href="#api">API</a>
-        </nav>
-
         <div class="header-actions">
           <span class="edge-state" id="edgeState">
             <span class="state-dot" aria-hidden="true"></span>
@@ -46,17 +40,9 @@
     <main id="main-content">
       <section class="hero shell" aria-labelledby="hero-title">
         <div class="hero-card">
-          <div class="hero-grid" aria-hidden="true"></div>
-          <div class="hero-glow" aria-hidden="true"></div>
-
           <div class="hero-topline">
-            <p class="eyebrow">YOUR PUBLIC ADDRESS</p>
+            <h1 id="hero-title">当前公网 IP</h1>
             <span class="live-badge"><span></span>实时</span>
-          </div>
-
-          <div class="hero-copy">
-            <h1 id="hero-title">看清你与网络的连接</h1>
-            <p>由离你最近的 Cloudflare 节点完成检测，不向第三方发送你的 IP。</p>
           </div>
 
           <div class="ip-stage" aria-live="polite" aria-busy="true" id="ipStage">
@@ -76,70 +62,20 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 4v5h5M4 13a8.1 8.1 0 0 0 15.5 2M20 20v-5h-5"></path></svg>
               重新检测
             </button>
-            <button class="button button-quiet" id="shareResult" type="button">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"></path></svg>
-              分享
-            </button>
-            <button class="button button-quiet" id="openJson" type="button">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3-4 4 4 4M16 13l4 4-4 4M14 2l-4 20"></path></svg>
-              查看 JSON
-            </button>
-          </div>
-
-          <div class="route-strip" aria-label="网络路径概览">
-            <div class="route-item">
-              <span class="route-label">位置</span>
-              <strong id="heroLocation">正在定位</strong>
-            </div>
-            <svg viewBox="0 0 42 10" aria-hidden="true"><path d="M1 5h38M35 1l4 4-4 4"></path></svg>
-            <div class="route-item">
-              <span class="route-label">网络</span>
-              <strong id="heroNetwork">正在识别</strong>
-            </div>
-            <svg viewBox="0 0 42 10" aria-hidden="true"><path d="M1 5h38M35 1l4 4-4 4"></path></svg>
-            <div class="route-item">
-              <span class="route-label">边缘节点</span>
-              <strong id="heroColo">—</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-side">
-          <div class="intro-block">
-            <span class="section-index">01 / OVERVIEW</span>
-            <h2>不只是一个<br>IP 地址。</h2>
-            <p>地理归属、运营网络、连接协议与当前设备环境，一次请求完整呈现。</p>
-          </div>
-
-          <div class="privacy-mini">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-4"></path></svg>
-            <div>
-              <strong>默认零留存</strong>
-              <span>无数据库 · 无 Cookie · 无第三方分析</span>
-            </div>
           </div>
         </div>
       </section>
 
       <section class="details-section shell" id="details" aria-labelledby="details-title">
         <div class="section-heading">
-          <div>
-            <span class="section-index">02 / DETAILS</span>
-            <h2 id="details-title">连接详情</h2>
-          </div>
+          <h2 id="details-title">IP 详细信息</h2>
           <p>缺失字段会明确显示“暂无数据”，不会用猜测补全。</p>
         </div>
 
         <div class="bento-grid">
           <article class="info-card location-card">
             <div class="card-heading">
-              <div class="card-icon location-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
-              </div>
-              <div>
-                <span>GEO LOCATION</span>
-                <h3>地理归属</h3>
-              </div>
+              <h3>地理位置</h3>
               <span class="country-flag" id="countryFlag" aria-hidden="true">◎</span>
             </div>
 
@@ -167,10 +103,7 @@
 
           <article class="info-card network-card">
             <div class="card-heading">
-              <div class="card-icon network-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"></circle><circle cx="19" cy="5" r="2"></circle><circle cx="19" cy="19" r="2"></circle><path d="m7 11 10-5M7 13l10 5"></path></svg>
-              </div>
-              <div><span>NETWORK IDENTITY</span><h3>网络身份</h3></div>
+              <h3>网络信息</h3>
             </div>
 
             <div class="metric-block">
@@ -194,10 +127,7 @@
 
           <article class="info-card connection-card">
             <div class="card-heading">
-              <div class="card-icon connection-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M4 17h2M8 13h2M12 9h2M16 5h2M20 3v18"></path></svg>
-              </div>
-              <div><span>CONNECTION</span><h3>连接质量</h3></div>
+              <h3>连接信息</h3>
               <span class="connection-pill" id="protocolBadge">—</span>
             </div>
 
@@ -206,7 +136,6 @@
                 <span>边缘往返延迟</span>
                 <strong><span id="rttValue">—</span><small id="rttUnit"></small></strong>
               </div>
-              <div class="signal-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
             </div>
 
             <dl class="data-list two-columns compact-list">
@@ -219,176 +148,18 @@
             </dl>
           </article>
 
-          <article class="info-card device-card">
-            <div class="card-heading">
-              <div class="card-icon device-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path></svg>
-              </div>
-              <div><span>LOCAL DEVICE</span><h3>当前设备</h3></div>
-              <span class="local-only">仅本地读取</span>
-            </div>
-
-            <dl class="data-list two-columns device-list">
-              <div><dt>浏览器</dt><dd id="browserName">—</dd></div>
-              <div><dt>操作系统</dt><dd id="osName">—</dd></div>
-              <div><dt>设备类型</dt><dd id="deviceType">—</dd></div>
-              <div><dt>首选语言</dt><dd id="browserLanguage">—</dd></div>
-              <div><dt>屏幕尺寸</dt><dd id="screenSize">—</dd></div>
-              <div><dt>视口尺寸</dt><dd id="viewportSize">—</dd></div>
-              <div><dt>网络类型</dt><dd id="effectiveType">—</dd></div>
-              <div><dt>配色偏好</dt><dd id="colorScheme">—</dd></div>
-            </dl>
-
-            <p class="card-footnote">设备数据只在浏览器中展示，不会上传或写入服务器。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="shortcut-section" id="shortcuts" aria-labelledby="shortcuts-title">
-        <div class="shell shortcut-layout">
-          <div class="shortcut-copy">
-            <span class="section-index light">03 / APPLE SHORTCUTS</span>
-            <div class="shortcut-icon" aria-hidden="true">
-              <svg viewBox="0 0 28 28"><path d="M8 3h12a5 5 0 0 1 5 5v12a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Z"></path><path d="m9 14 3-3 3 3 4-4M19 15v4h-4"></path></svg>
-            </div>
-            <h2 id="shortcuts-title">抬手就能查。<br>适配苹果快捷指令。</h2>
-            <p>不用安装 App，也不用填写 API Key。使用系统自带的“获取 URL 内容”操作，即可得到 JSON 或排版好的中文结果。</p>
-
-            <div class="endpoint-copy">
-              <span>推荐：中文文本接口</span>
-              <div>
-                <code id="shortcutTextUrl">/api/v1/ip?format=text</code>
-                <button id="copyTextEndpoint" type="button" aria-label="复制文本接口地址">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="steps-card">
-            <div class="steps-header">
-              <div><span>3 STEPS</span><h3>新建快捷指令</h3></div>
-              <span class="ios-badge">iOS / macOS</span>
-            </div>
-            <ol class="steps-list">
-              <li>
-                <span>1</span>
-                <div><strong>添加“URL”操作</strong><p>粘贴左侧文本接口地址。</p></div>
-              </li>
-              <li>
-                <span>2</span>
-                <div><strong>添加“获取 URL 内容”</strong><p>方法保持 GET，无需添加请求头。</p></div>
-              </li>
-              <li>
-                <span>3</span>
-                <div><strong>添加“显示结果”</strong><p>运行后直接看到完整中文网络信息。</p></div>
-              </li>
-            </ol>
-            <div class="steps-actions">
-              <button class="button button-dark" id="copyJsonEndpoint" type="button">复制 JSON 接口</button>
-              <button class="button button-outline-dark" id="testTextEndpoint" type="button">测试文本接口</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="api-section shell" id="api" aria-labelledby="api-title">
-        <div class="section-heading api-heading">
-          <div>
-            <span class="section-index">04 / API</span>
-            <h2 id="api-title">为自动化准备的稳定接口</h2>
-          </div>
-          <p>固定字段、缺失值为 <code>null</code>、禁止共享缓存，方便脚本与快捷指令长期调用。</p>
-        </div>
-
-        <div class="api-grid">
-          <div class="api-routes">
-            <button class="route-row is-active" type="button" data-api-format="json">
-              <span class="method">GET</span>
-              <code>/api/v1/ip</code>
-              <span>详细 JSON</span>
-            </button>
-            <button class="route-row" type="button" data-api-format="text">
-              <span class="method">GET</span>
-              <code>/api/v1/ip?format=text</code>
-              <span>中文摘要</span>
-            </button>
-            <button class="route-row" type="button" data-api-format="plain">
-              <span class="method">GET</span>
-              <code>/ip</code>
-              <span>仅 IP</span>
-            </button>
-
-            <div class="api-features">
-              <div><span aria-hidden="true">✓</span><p><strong>零密钥</strong>部署即可使用</p></div>
-              <div><span aria-hidden="true">✓</span><p><strong>无共享缓存</strong>避免串号</p></div>
-              <div><span aria-hidden="true">✓</span><p><strong>IPv4 / IPv6</strong>自动识别</p></div>
-            </div>
-          </div>
-
-          <div class="code-panel">
-            <div class="code-toolbar">
-              <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-              <span id="codePanelLabel">response.json</span>
-              <button id="copyApiResponse" type="button">复制</button>
-            </div>
-            <pre><code id="apiPreview">{
-  "ok": true,
-  "ip": "正在检测…"
-}</code></pre>
-          </div>
-        </div>
-      </section>
-
-      <section class="privacy-section shell" aria-labelledby="privacy-title">
-        <div class="privacy-card">
-          <div class="privacy-graphic" aria-hidden="true">
-            <div class="orbit orbit-one"></div>
-            <div class="orbit orbit-two"></div>
-            <svg viewBox="0 0 48 48"><path d="M24 43s15-7.5 15-19V11L24 5 9 11v13c0 11.5 15 19 15 19Z"></path><path d="m17 24 5 5 10-11"></path></svg>
-          </div>
-          <div>
-            <span class="section-index">PRIVACY BY DEFAULT</span>
-            <h2 id="privacy-title">你的连接信息，只属于你。</h2>
-            <p>本项目不需要数据库，不设置跟踪 Cookie，也不把 IP 发送给第三方地理服务。Worker 仅将 Cloudflare 随当前请求提供的信息原样整理后返回。</p>
-          </div>
-          <ul>
-            <li><span>01</span>无持久化存储</li>
-            <li><span>02</span>不回显敏感请求头</li>
-            <li><span>03</span>内容禁止共享缓存</li>
-          </ul>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <div>
-          <a class="brand footer-brand" href="/">
-            <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
-            <span>IP Lens</span>
-          </a>
-          <p>开源、自托管、运行在 Cloudflare Workers。</p>
-        </div>
         <div class="footer-meta">
           <span id="footerStatus"><i></i><span id="footerStatusText">服务正常</span></span>
           <span>IP 位置是近似结果，不代表精确住址</span>
         </div>
       </div>
     </footer>
-
-    <dialog id="jsonDialog" class="json-dialog" aria-labelledby="dialogTitle">
-      <div class="dialog-heading">
-        <div><span>LIVE RESPONSE</span><h2 id="dialogTitle">接口返回</h2></div>
-        <button id="closeDialog" type="button" aria-label="关闭接口返回窗口">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
-        </button>
-      </div>
-      <pre><code id="dialogJson"></code></pre>
-      <div class="dialog-actions">
-        <button class="button button-dark" id="dialogCopy" type="button">复制 JSON</button>
-      </div>
-    </dialog>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>
